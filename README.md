@@ -1,0 +1,1 @@
+# for resources to be deployed in Kubernetes cluster

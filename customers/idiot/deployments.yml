@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: idiot
+  namespace: idiot
+  labels:
+    app: idiot
+spec:
+  selector:
+    matchLabels:
+      app: idiot
+  replicas: 1
+  revisionHistoryLimit: 2
+  template:
+    metadata:
+      annotations:
+        vault.hashicorp.com/agent-inject: "true"
+        vault.hashicorp.com/role: "idiot-sa"
+        vault.hashicorp.com/agent-inject-secret-configuration.txt: "customers/idiot/configuration/database"
+      labels:
+        app: idiot
+    spec:
+      serviceAccountName: idiot-sa
+      containers:
+        - name: orgchart
+          image: jweissig/app:0.0.1
