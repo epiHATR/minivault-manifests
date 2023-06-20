@@ -1,3 +1,4 @@
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -16,7 +17,12 @@ spec:
       annotations:
         vault.hashicorp.com/agent-inject: "true"
         vault.hashicorp.com/role: "idiot-sa"
-        vault.hashicorp.com/agent-inject-secret-configuration.txt: "customers/idiot/configuration/database"
+        vault.hashicorp.com/agent-inject-secret-database.json: "customers/idiot/configuration/database"
+        vault.hashicorp.com/secret-volume-path-database.json: "/app/config"
+        vault.hashicorp.com/agent-inject-template-database.json: |
+          {{- with secret "customers/idiot/configuration/database" -}}
+            {{- .Data.data | toJSONPretty }}
+          {{- end }}
       labels:
         app: idiot
     spec:
